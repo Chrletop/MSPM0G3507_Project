@@ -78,6 +78,20 @@ extern "C" {
 
 
 
+/* Defines for PWM */
+#define PWM_INST                                                           TIMG7
+#define PWM_INST_IRQHandler                                     TIMG7_IRQHandler
+#define PWM_INST_INT_IRQN                                       (TIMG7_INT_IRQn)
+#define PWM_INST_CLK_FREQ                                                  20000
+/* GPIO defines for channel 0 */
+#define GPIO_PWM_C0_PORT                                                   GPIOA
+#define GPIO_PWM_C0_PIN                                           DL_GPIO_PIN_28
+#define GPIO_PWM_C0_IOMUX                                         (IOMUX_PINCM3)
+#define GPIO_PWM_C0_IOMUX_FUNC                        IOMUX_PINCM3_PF_TIMG7_CCP0
+#define GPIO_PWM_C0_IDX                                      DL_TIMER_CC_0_INDEX
+
+
+
 /* Defines for UART_0 */
 #define UART_0_INST                                                        UART0
 #define UART_0_INST_FREQUENCY                                            4000000
@@ -136,6 +150,7 @@ void SYSCFG_DL_init(void);
 void SYSCFG_DL_initPower(void);
 void SYSCFG_DL_GPIO_init(void);
 void SYSCFG_DL_SYSCTL_init(void);
+void SYSCFG_DL_PWM_init(void);
 void SYSCFG_DL_UART_0_init(void);
 
 void SYSCFG_DL_SYSTICK_init(void);

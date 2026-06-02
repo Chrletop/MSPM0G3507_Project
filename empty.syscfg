@@ -11,6 +11,8 @@
  */
 const GPIO    = scripting.addModule("/ti/driverlib/GPIO", {}, false);
 const GPIO1   = GPIO.addInstance();
+const PWM     = scripting.addModule("/ti/driverlib/PWM", {}, false);
+const PWM1    = PWM.addInstance();
 const SYSCTL  = scripting.addModule("/ti/driverlib/SYSCTL");
 const SYSTICK = scripting.addModule("/ti/driverlib/SYSTICK");
 const UART    = scripting.addModule("/ti/driverlib/UART", {}, false);
@@ -42,6 +44,22 @@ GPIO1.associatedPins[4].direction    = "INPUT";
 GPIO1.associatedPins[5].$name        = "CS1";
 GPIO1.associatedPins[6].$name        = "CS2";
 GPIO1.associatedPins[7].$name        = "BLK";
+
+PWM1.ccIndex                            = [0];
+PWM1.$name                              = "PWM";
+PWM1.clockDivider                       = 8;
+PWM1.clockPrescale                      = 200;
+PWM1.timerCount                         = 400;
+PWM1.timerStartTimer                    = true;
+PWM1.peripheral.$assign                 = "TIMG7";
+PWM1.peripheral.ccp0Pin.$assign         = "PA28";
+PWM1.PWM_CHANNEL_0.$name                = "ti_driverlib_pwm_PWMTimerCC0";
+PWM1.PWM_CHANNEL_0.invert               = true;
+PWM1.ccp0PinConfig.direction            = scripting.forceWrite("OUTPUT");
+PWM1.ccp0PinConfig.hideOutputInversion  = scripting.forceWrite(false);
+PWM1.ccp0PinConfig.onlyInternalResistor = scripting.forceWrite(false);
+PWM1.ccp0PinConfig.passedPeripheralType = scripting.forceWrite("Digital");
+PWM1.ccp0PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric2";
 
 const Board = scripting.addModule("/ti/driverlib/Board", {}, false);
 
@@ -75,6 +93,7 @@ GPIO1.associatedPins[4].pin.$suggestSolution = "PA17";
 GPIO1.associatedPins[5].pin.$suggestSolution = "PA15";
 GPIO1.associatedPins[6].pin.$suggestSolution = "PA14";
 GPIO1.associatedPins[7].pin.$suggestSolution = "PA13";
+PWM1.peripheral.ccp0Pin.$suggestSolution     = "PA28";
 Board.peripheral.$suggestSolution            = "DEBUGSS";
 Board.peripheral.swclkPin.$suggestSolution   = "PA20";
 Board.peripheral.swdioPin.$suggestSolution   = "PA19";

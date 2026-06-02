@@ -385,9 +385,9 @@
           <GroupName>Source</GroupName>
           <Files>
             <File>
-              <FileName>empty.c</FileName>
+              <FileName>app_main.c</FileName>
               <FileType>1</FileType>
-              <FilePath>../empty.c</FilePath>
+              <FilePath>../app_main.c</FilePath>
             </File>
             <File>
               <FileName>empty.syscfg</FileName>
@@ -433,6 +433,11 @@
               <FileName>zk.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\LCD\zk.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_sg90.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_sg90.c</FilePath>
             </File>
           </Files>
         </Group>

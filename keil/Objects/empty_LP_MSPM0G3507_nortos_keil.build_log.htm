@@ -26,59 +26,23 @@ Project File Date:  06/03/2026
 
 <h2>Output:</h2>
 *** Using Compiler 'V6.24', folder: 'F:\Keil_v5\ARM\ARMCLANG\Bin'
-Rebuild target 'MSPM0G3507_Project'
+Build target 'MSPM0G3507_Project'
 Before Build - User command #1: cmd.exe /C "F:\TI\mspm0_sdk_2_10_00_04\tools\keil\syscfg.bat 'F:\TI\mspm0_sdk_2_10_00_04\MSPM0G3507_Project\keil\' empty.syscfg"
 Using Sysconfig Tool from "F:\TI\SYSCONFIG\sysconfig_cli.bat"
 "Update the file located at <sdk path>/tools/keil/syscfg.bat to use a different version"
 Running script...
 Validating...
+info: PWM(/ti/driverlib/PWM): Peripheral does not retain register contents in STOP or STANDBY modes. User should take care to save and restore register configuration in application. See Retention Configuration section for more details.
 Generating Code (empty.syscfg)...
-Unchanged F:\TI\mspm0_sdk_2_10_00_04\MSPM0G3507_Project\ti_msp_dl_config.c...
-Unchanged F:\TI\mspm0_sdk_2_10_00_04\MSPM0G3507_Project\ti_msp_dl_config.h...
+Writing F:\TI\mspm0_sdk_2_10_00_04\MSPM0G3507_Project\ti_msp_dl_config.c...
+Writing F:\TI\mspm0_sdk_2_10_00_04\MSPM0G3507_Project\ti_msp_dl_config.h...
 Unchanged F:\TI\mspm0_sdk_2_10_00_04\MSPM0G3507_Project\Event.dot...
-assembling startup_mspm0g350x_uvision.s...
-../empty.c(74): warning: illegal character encoding in string literal [-Winvalid-source-encoding]
-   74 |         Display_GB2312_String(0,145,12, "<C6><C1>Ļ<A3><B1><A3><B2><A3><F8><A3><B1><A3><B2>",RED,WHITE); //12x12<BA><BA><D7><D6>
-      |                                          ^~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../empty.c(74): warning: passing 'char[15]' to parameter of type 'uint8_t *' (aka 'unsigned char *') converts between pointers to integer types where one is of the unique plain 'char' type and the other is not [-Wpointer-sign]
-   74 |         Display_GB2312_String(0,145,12, "<C6><C1>Ļ<A3><B1><A3><B2><A3><F8><A3><B1><A3><B2>",RED,WHITE); //12x12<BA><BA><D7><D6>
-      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../BSP/LCD\lcd.h(42): note: passing argument to parameter 'text' here
-   42 | void Display_GB2312_String(u16 x,u16 y,u8 zk_num,u8 text[],u16 fc,u16 bc);
-      |                                                     ^
-../empty.c(75): warning: illegal character encoding in string literal [-Winvalid-source-encoding]
-   75 |         Display_GB2312_String(0,160,16, "<C6><C1>Ļ<A3><B1><A3><B6><A3><F8><A3><B1><A3><B6>",RED,WHITE); //15x16<BA><BA><D7><D6>
-      |                                          ^~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../empty.c(75): warning: passing 'char[15]' to parameter of type 'uint8_t *' (aka 'unsigned char *') converts between pointers to integer types where one is of the unique plain 'char' type and the other is not [-Wpointer-sign]
-   75 |         Display_GB2312_String(0,160,16, "<C6><C1>Ļ<A3><B1><A3><B6><A3><F8><A3><B1><A3><B6>",RED,WHITE); //15x16<BA><BA><D7><D6>
-      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../BSP/LCD\lcd.h(42): note: passing argument to parameter 'text' here
-   42 | void Display_GB2312_String(u16 x,u16 y,u8 zk_num,u8 text[],u16 fc,u16 bc);
-      |                                                     ^
-../empty.c(76): warning: illegal character encoding in string literal [-Winvalid-source-encoding]
-   76 |         Display_GB2312_String(0,179,24, "<C6><C1>Ļ<A3><B2><A3><B4><A3><F8><A3><B2><A3><B4>",RED,WHITE); //24x24<BA><BA><D7><D6>
-      |                                          ^~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../empty.c(76): warning: passing 'char[15]' to parameter of type 'uint8_t *' (aka 'unsigned char *') converts between pointers to integer types where one is of the unique plain 'char' type and the other is not [-Wpointer-sign]
-   76 |         Display_GB2312_String(0,179,24, "<C6><C1>Ļ<A3><B2><A3><B4><A3><F8><A3><B2><A3><B4>",RED,WHITE); //24x24<BA><BA><D7><D6>
-      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../BSP/LCD\lcd.h(42): note: passing argument to parameter 'text' here
-   42 | void Display_GB2312_String(u16 x,u16 y,u8 zk_num,u8 text[],u16 fc,u16 bc);
-      |                                                     ^
-../empty.c(77): warning: illegal character encoding in string literal [-Winvalid-source-encoding]
-   77 |         Display_GB2312_String(0,204,32, "<C6><C1>Ļ<A3><B3><A3><B2><A3><F8><A3><B3>",RED,WHITE);   //32x32<BA><BA><D7><D6>
-      |                                          ^~~~~~~~ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../empty.c(77): warning: passing 'char[13]' to parameter of type 'uint8_t *' (aka 'unsigned char *') converts between pointers to integer types where one is of the unique plain 'char' type and the other is not [-Wpointer-sign]
-   77 |         Display_GB2312_String(0,204,32, "<C6><C1>Ļ<A3><B3><A3><B2><A3><F8><A3><B3>",RED,WHITE);   //32x32<BA><BA><D7><D6>
-      |                                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-../BSP/LCD\lcd.h(42): note: passing argument to parameter 'text' here
-   42 | void Display_GB2312_String(u16 x,u16 y,u8 zk_num,u8 text[],u16 fc,u16 bc);
-      |                                                     ^
-8 warnings generated.
-compiling empty.c...
-compiling ti_msp_dl_config.c...
+compiling app_main.c...
 compiling board.c...
+compiling ti_msp_dl_config.c...
 compiling lcd_init.c...
 compiling zk.c...
+compiling bsp_sg90.c...
 ../BSP/LCD/lcd.c(3): warning: In file included from...
 ../BSP/LCD\lcdfont.h(405): warning: illegal character encoding in string literal [-Winvalid-source-encoding]
   405 | "<D6><D0>",0x20,0x00,0x20,0x00,0x20,0x00,0xFE,0x03,0x22,0x02,0x22,0x02,0x22,0x02,0xFE,0x03,
@@ -131,9 +95,9 @@ compiling zk.c...
 16 warnings generated.
 compiling lcd.c...
 linking...
-Program Size: Code=11396 RO-data=16796 RW-data=0 ZI-data=704  
+Program Size: Code=10476 RO-data=16796 RW-data=0 ZI-data=864  
 FromELF: creating hex file...
-".\Objects\empty_LP_MSPM0G3507_nortos_keil.axf" - 0 Error(s), 24 Warning(s).
+".\Objects\empty_LP_MSPM0G3507_nortos_keil.axf" - 0 Error(s), 16 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -145,7 +109,7 @@ Package Vendor: TexasInstruments
 <h2>Collection of Component include folders:</h2>
 
 <h2>Collection of Component Files used:</h2>
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:03
 </pre>
 </body>
 </html>
