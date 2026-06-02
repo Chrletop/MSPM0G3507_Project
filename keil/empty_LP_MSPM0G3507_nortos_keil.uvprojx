@@ -439,6 +439,16 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\bsp_sg90.c</FilePath>
             </File>
+            <File>
+              <FileName>servo_controller.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\servo_controller.c</FilePath>
+            </File>
+            <File>
+              <FileName>servo_controller.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\servo_controller.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

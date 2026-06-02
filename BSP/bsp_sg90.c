@@ -10,27 +10,14 @@
  * 2024-07-08     LCKFB-LP    first version
  */
 #include "bsp_sg90.h"
-
-static unsigned int g_servo_angle = 0;
+#include "servo_controller.h"
 
 void Set_Servo_Angle(unsigned int angle)
 {
-    float min_count = 10.0f;
-    float max_count = 50.0f;
-    float servo_count;
-
-    if (angle > 180U) {
-        angle = 180U;
-    }
-
-    g_servo_angle = angle;
-    servo_count   = min_count + (((float) angle / 180.0f) * (max_count - min_count));
-
-    DL_TimerG_setCaptureCompareValue(
-        PWM_INST, (uint32_t) (servo_count + 0.5f), GPIO_PWM_C0_IDX);
+    ServoController_SetAngle(SERVO_MOTOR_HEAD, angle);
 }
 
 unsigned int Get_Servo_Angle(void)
 {
-    return g_servo_angle;
+    return ServoController_GetAngle(SERVO_MOTOR_HEAD);
 }
