@@ -257,22 +257,23 @@ static VoiceI2C_ReadResult VoiceI2C_ReadWonderEcho(uint8_t *cmd_id)
     }
 
     DL_I2C_transmitControllerData(VOICE_I2C_INST, WONDERECHO_RESULT_REG);
-    DL_I2C_startControllerTransferAdvanced(VOICE_I2C_INST, WONDERECHO_I2C_ADDR,
-        DL_I2C_CONTROLLER_DIRECTION_TX, 1U, DL_I2C_CONTROLLER_START_ENABLE,
-        DL_I2C_CONTROLLER_STOP_DISABLE, DL_I2C_CONTROLLER_ACK_ENABLE);
+    DL_I2C_startControllerTransfer(VOICE_I2C_INST, WONDERECHO_I2C_ADDR,
+        DL_I2C_CONTROLLER_DIRECTION_TX, 1U);
 
-    result = VoiceI2C_WaitInterrupt(
-        DL_I2C_INTERRUPT_CONTROLLER_TX_DONE, "I2C TX TMO");
-    if (result != VOICE_I2C_READ_OK) {
-        return result;
+    if (VoiceI2C_WaitBusFree() != VOICE_I2C_READ_OK) {
+        return VOICE_I2C_READ_ERROR;
     }
 
-    DL_I2C_clearInterruptStatus(VOICE_I2C_INST, VOICE_I2C_CLEAR_INTERRUPTS);
-    DL_I2C_flushControllerRXFIFO(VOICE_I2C_INST);
+    if (VoiceI2C_WaitIdle() != VOICE_I2C_READ_OK) {
+        return VOICE_I2C_READ_ERROR;
+    }
 
-    DL_I2C_startControllerTransferAdvanced(VOICE_I2C_INST, WONDERECHO_I2C_ADDR,
-        DL_I2C_CONTROLLER_DIRECTION_RX, 1U, DL_I2C_CONTROLLER_START_ENABLE,
-        DL_I2C_CONTROLLER_STOP_ENABLE, DL_I2C_CONTROLLER_ACK_ENABLE);
+    DL_I2C_flushControllerTXFIFO(VOICE_I2C_INST);
+    DL_I2C_flushControllerRXFIFO(VOICE_I2C_INST);
+    DL_I2C_clearInterruptStatus(VOICE_I2C_INST, VOICE_I2C_CLEAR_INTERRUPTS);
+
+    DL_I2C_startControllerTransfer(VOICE_I2C_INST, WONDERECHO_I2C_ADDR,
+        DL_I2C_CONTROLLER_DIRECTION_RX, 1U);
 
     result = VoiceI2C_ReadRxBytes(&value, 1U);
     if (result != VOICE_I2C_READ_OK) {

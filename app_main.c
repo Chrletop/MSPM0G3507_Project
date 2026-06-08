@@ -80,12 +80,12 @@ static const VoiceI2C_CommandAction g_voice_actions[] = {
     {6U, "POSTURE1", Action_Posture1},
     {7U, "SHAKE", Action_ShakeHead},
 
-    {11U, "RUN", Action_Forward},
-    {12U, "BACK", Action_Backward},
+    {161U, "RUN", Action_Forward},
+    {162U, "BACK", Action_Backward},
     {13U, "LEFT", Action_TurnLeft},
     {14U, "RIGHT", Action_TurnRight},
     {15U, "STOP", Action_Stand},
-    {16U, "POSTURE1", Action_Posture1},
+    {164U, "POSTURE1", Action_Posture1},
     {17U, "POSTURE2", Action_Posture2},
 };
 
@@ -101,7 +101,7 @@ static void LCD_ShowHeader(void)
         WHITE, 16, 0);
 }
 
-static void LCD_ShowStatus(uint8_t raw_id)
+static void LCD_ShowStatus(uint8_t raw_id, uint8_t last_cmd_id)
 {
     uint16_t color;
 
@@ -113,6 +113,8 @@ static void LCD_ShowStatus(uint8_t raw_id)
 
     LCD_ShowString(0, 96, (const uint8_t *) "RAW:", BLUE, WHITE, 16, 0);
     LCD_ShowIntNum(48, 96, raw_id, 3, BLUE, WHITE, 16);
+    LCD_ShowString(96, 96, (const uint8_t *) "LAST:", BLUE, WHITE, 16, 0);
+    LCD_ShowIntNum(152, 96, last_cmd_id, 3, BLUE, WHITE, 16);
 
     LCD_ShowString(0, 120, (const uint8_t *) VoiceI2C_GetStatusText(), color,
         WHITE, 16, 0);
@@ -139,6 +141,8 @@ int main(void)
     VoiceI2C_Event event;
     VoiceI2C_ReadResult read_result;
     uint32_t refresh_count = 0U;
+    uint8_t raw_id         = 0U;
+    uint8_t last_cmd_id    = 0U;
 
     App_Init();
 
@@ -149,21 +153,26 @@ int main(void)
     ServoController_Init();
     VoiceI2C_InitState();
 
-    LCD_ShowStatus(0U);
+    LCD_ShowStatus(0U, last_cmd_id);
     LCD_ShowAction("WAIT VOICE", "IDLE");
 
     while (1) {
         read_result = VoiceI2C_PollEvent(
             &event, g_voice_actions, VOICE_ACTION_COUNT);
+        raw_id = VoiceI2C_GetLastRawId();
+
+        if (raw_id != 0U) {
+            last_cmd_id = raw_id;
+        }
 
         if (read_result == VOICE_I2C_READ_OK) {
-            LCD_ShowStatus(event.cmd_id);
+            LCD_ShowStatus(raw_id, last_cmd_id);
 
             if (event.action != (VoiceI2C_ActionFn) 0) {
                 LCD_ShowAction(event.name, "RUN");
                 event.action();
 
-                LCD_ShowStatus(event.cmd_id);
+                LCD_ShowStatus(raw_id, last_cmd_id);
                 LCD_ShowAction(event.name, "DONE");
                 delay_ms(ACTION_DONE_DELAY_MS);
             } else {
@@ -172,13 +181,20 @@ int main(void)
 
             refresh_count = 0U;
         } else if (read_result == VOICE_I2C_READ_ERROR) {
-            LCD_ShowStatus(VoiceI2C_GetLastRawId());
+            LCD_ShowStatus(raw_id, last_cmd_id);
             LCD_ShowAction("I2C ERROR", "CHECK WIRE");
             refresh_count = 0U;
         } else {
-            refresh_count++;
-            if (refresh_count >= STATUS_REFRESH_TICKS) {
-                LCD_ShowStatus(0U);
+            if (raw_id != 0U) {
+                LCD_ShowStatus(raw_id, last_cmd_id);
+                LCD_ShowAction("ID HOLD", "NO REPEAT");
+                refresh_count = 0U;
+            } else {
+                refresh_count++;
+            }
+
+            if ((raw_id == 0U) && (refresh_count >= STATUS_REFRESH_TICKS)) {
+                LCD_ShowStatus(raw_id, last_cmd_id);
                 LCD_ShowAction("WAIT VOICE", "IDLE");
                 refresh_count = 0U;
             }
