@@ -72,7 +72,7 @@
           <BeforeMake>
             <RunUserProg1>1</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name>cmd.exe /C "F:\TI\mspm0_sdk_2_10_00_04\tools\keil\syscfg.bat 'F:\TI\mspm0_sdk_2_10_00_04\MSPM0G3507_Project\keil\' empty.syscfg"</UserProg1Name>
+            <UserProg1Name>cmd.exe /C "H:\Software\ti\M0_SDK\mspm0_sdk_2_10_00_04\tools\keil\syscfg.bat 'H:\Software\ti\M0_SDK\mspm0_sdk_2_10_00_04\MSPM0G3507_Project\keil\' empty.syscfg"</UserProg1Name>
             <UserProg2Name></UserProg2Name>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
@@ -138,7 +138,7 @@
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -448,6 +448,16 @@
               <FileName>servo_controller.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\BSP\servo_controller.h</FilePath>
+            </File>
+            <File>
+              <FileName>voice_i2c.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\voice_i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>voice_i2c.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\voice_i2c.h</FilePath>
             </File>
             <File>
               <FileName>speaker_test.c</FileName>
