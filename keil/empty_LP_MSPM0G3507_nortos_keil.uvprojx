@@ -449,6 +449,16 @@
               <FileType>5</FileType>
               <FilePath>..\BSP\servo_controller.h</FilePath>
             </File>
+            <File>
+              <FileName>speaker_test.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\speaker_test.c</FilePath>
+            </File>
+            <File>
+              <FileName>speaker_test.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\speaker_test.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

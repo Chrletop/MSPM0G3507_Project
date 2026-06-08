@@ -140,6 +140,22 @@ extern "C" {
 
 
 
+
+/* Defines for VOICE_I2C */
+#define VOICE_I2C_INST                                                      I2C1
+#define VOICE_I2C_INST_IRQHandler                                I2C1_IRQHandler
+#define VOICE_I2C_INST_INT_IRQN                                    I2C1_INT_IRQn
+#define VOICE_I2C_BUS_SPEED_HZ                                            100000
+#define GPIO_VOICE_I2C_SDA_PORT                                            GPIOB
+#define GPIO_VOICE_I2C_SDA_PIN                                     DL_GPIO_PIN_3
+#define GPIO_VOICE_I2C_IOMUX_SDA                                 (IOMUX_PINCM16)
+#define GPIO_VOICE_I2C_IOMUX_SDA_FUNC                  IOMUX_PINCM16_PF_I2C1_SDA
+#define GPIO_VOICE_I2C_SCL_PORT                                            GPIOB
+#define GPIO_VOICE_I2C_SCL_PIN                                     DL_GPIO_PIN_2
+#define GPIO_VOICE_I2C_IOMUX_SCL                                 (IOMUX_PINCM15)
+#define GPIO_VOICE_I2C_IOMUX_SCL_FUNC                  IOMUX_PINCM15_PF_I2C1_SCL
+
+
 /* Defines for UART_0 */
 #define UART_0_INST                                                        UART0
 #define UART_0_INST_FREQUENCY                                            4000000
@@ -160,7 +176,32 @@ extern "C" {
 
 
 
+/* Defines for SPEAKER_SPI */
+#define SPEAKER_SPI_INST                                                   SPI1
+#define SPEAKER_SPI_INST_IRQHandler                             SPI1_IRQHandler
+#define SPEAKER_SPI_INST_INT_IRQN                                 SPI1_INT_IRQn
+#define GPIO_SPEAKER_SPI_PICO_PORT                                        GPIOB
+#define GPIO_SPEAKER_SPI_PICO_PIN                                 DL_GPIO_PIN_8
+#define GPIO_SPEAKER_SPI_IOMUX_PICO                             (IOMUX_PINCM25)
+#define GPIO_SPEAKER_SPI_IOMUX_PICO_FUNC             IOMUX_PINCM25_PF_SPI1_PICO
+#define GPIO_SPEAKER_SPI_POCI_PORT                                        GPIOB
+#define GPIO_SPEAKER_SPI_POCI_PIN                                DL_GPIO_PIN_14
+#define GPIO_SPEAKER_SPI_IOMUX_POCI                             (IOMUX_PINCM31)
+#define GPIO_SPEAKER_SPI_IOMUX_POCI_FUNC             IOMUX_PINCM31_PF_SPI1_POCI
+/* GPIO configuration for SPEAKER_SPI */
+#define GPIO_SPEAKER_SPI_SCLK_PORT                                        GPIOB
+#define GPIO_SPEAKER_SPI_SCLK_PIN                                 DL_GPIO_PIN_9
+#define GPIO_SPEAKER_SPI_IOMUX_SCLK                             (IOMUX_PINCM26)
+#define GPIO_SPEAKER_SPI_IOMUX_SCLK_FUNC             IOMUX_PINCM26_PF_SPI1_SCLK
 
+
+
+/* Port definition for Pin Group SPEAKER */
+#define SPEAKER_PORT                                                     (GPIOB)
+
+/* Defines for LRC: GPIOB.7 with pinCMx 24 on package pin 59 */
+#define SPEAKER_LRC_PIN                                          (DL_GPIO_PIN_7)
+#define SPEAKER_LRC_IOMUX                                        (IOMUX_PINCM24)
 /* Port definition for Pin Group LCD */
 #define LCD_PORT                                                         (GPIOA)
 
@@ -170,15 +211,15 @@ extern "C" {
 /* Defines for SDA: GPIOA.12 with pinCMx 34 on package pin 5 */
 #define LCD_SDA_PIN                                             (DL_GPIO_PIN_12)
 #define LCD_SDA_IOMUX                                            (IOMUX_PINCM34)
-/* Defines for RES: GPIOA.18 with pinCMx 40 on package pin 11 */
-#define LCD_RES_PIN                                             (DL_GPIO_PIN_18)
-#define LCD_RES_IOMUX                                            (IOMUX_PINCM40)
+/* Defines for RES: GPIOA.23 with pinCMx 53 on package pin 24 */
+#define LCD_RES_PIN                                             (DL_GPIO_PIN_23)
+#define LCD_RES_IOMUX                                            (IOMUX_PINCM53)
 /* Defines for DC: GPIOA.16 with pinCMx 38 on package pin 9 */
 #define LCD_DC_PIN                                              (DL_GPIO_PIN_16)
 #define LCD_DC_IOMUX                                             (IOMUX_PINCM38)
-/* Defines for FSO: GPIOA.21 with pinCMx 46 on package pin 17 */
-#define LCD_FSO_PIN                                             (DL_GPIO_PIN_21)
-#define LCD_FSO_IOMUX                                            (IOMUX_PINCM46)
+/* Defines for FSO: GPIOA.18 with pinCMx 40 on package pin 11 */
+#define LCD_FSO_PIN                                             (DL_GPIO_PIN_18)
+#define LCD_FSO_IOMUX                                            (IOMUX_PINCM40)
 /* Defines for CS1: GPIOA.17 with pinCMx 39 on package pin 10 */
 #define LCD_CS1_PIN                                             (DL_GPIO_PIN_17)
 #define LCD_CS1_IOMUX                                            (IOMUX_PINCM39)
@@ -203,7 +244,9 @@ void SYSCFG_DL_PWM_LEG_FL_init(void);
 void SYSCFG_DL_PWM_LEG_FR_init(void);
 void SYSCFG_DL_PWM_LEG_BL_init(void);
 void SYSCFG_DL_PWM_LEG_BR_init(void);
+void SYSCFG_DL_VOICE_I2C_init(void);
 void SYSCFG_DL_UART_0_init(void);
+void SYSCFG_DL_SPEAKER_SPI_init(void);
 
 void SYSCFG_DL_SYSTICK_init(void);
 

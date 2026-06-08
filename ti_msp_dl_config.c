@@ -44,6 +44,7 @@ DL_TimerG_backupConfig gPWMBackup;
 DL_TimerA_backupConfig gPWM_LEG_FLBackup;
 DL_TimerG_backupConfig gPWM_LEG_BLBackup;
 DL_TimerA_backupConfig gPWM_LEG_BRBackup;
+DL_SPI_backupConfig gSPEAKER_SPIBackup;
 
 /*
  *  ======== SYSCFG_DL_init ========
@@ -60,7 +61,9 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_PWM_LEG_FR_init();
     SYSCFG_DL_PWM_LEG_BL_init();
     SYSCFG_DL_PWM_LEG_BR_init();
+    SYSCFG_DL_VOICE_I2C_init();
     SYSCFG_DL_UART_0_init();
+    SYSCFG_DL_SPEAKER_SPI_init();
     SYSCFG_DL_SYSTICK_init();
     /* Ensure backup structures have no valid state */
 	gPWMBackup.backupRdy 	= false;
@@ -68,6 +71,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
 	gPWM_LEG_BLBackup.backupRdy 	= false;
 	gPWM_LEG_BRBackup.backupRdy 	= false;
 
+	gSPEAKER_SPIBackup.backupRdy 	= false;
 
 }
 /*
@@ -82,6 +86,7 @@ SYSCONFIG_WEAK bool SYSCFG_DL_saveConfiguration(void)
 	retStatus &= DL_TimerA_saveConfiguration(PWM_LEG_FL_INST, &gPWM_LEG_FLBackup);
 	retStatus &= DL_TimerG_saveConfiguration(PWM_LEG_BL_INST, &gPWM_LEG_BLBackup);
 	retStatus &= DL_TimerA_saveConfiguration(PWM_LEG_BR_INST, &gPWM_LEG_BRBackup);
+	retStatus &= DL_SPI_saveConfiguration(SPEAKER_SPI_INST, &gSPEAKER_SPIBackup);
 
     return retStatus;
 }
@@ -95,6 +100,7 @@ SYSCONFIG_WEAK bool SYSCFG_DL_restoreConfiguration(void)
 	retStatus &= DL_TimerA_restoreConfiguration(PWM_LEG_FL_INST, &gPWM_LEG_FLBackup, false);
 	retStatus &= DL_TimerG_restoreConfiguration(PWM_LEG_BL_INST, &gPWM_LEG_BLBackup, false);
 	retStatus &= DL_TimerA_restoreConfiguration(PWM_LEG_BR_INST, &gPWM_LEG_BRBackup, false);
+	retStatus &= DL_SPI_restoreConfiguration(SPEAKER_SPI_INST, &gSPEAKER_SPIBackup);
 
     return retStatus;
 }
@@ -108,7 +114,9 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerG_reset(PWM_LEG_FR_INST);
     DL_TimerG_reset(PWM_LEG_BL_INST);
     DL_TimerA_reset(PWM_LEG_BR_INST);
+    DL_I2C_reset(VOICE_I2C_INST);
     DL_UART_Main_reset(UART_0_INST);
+    DL_SPI_reset(SPEAKER_SPI_INST);
 
 
     DL_GPIO_enablePower(GPIOA);
@@ -118,7 +126,9 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerG_enablePower(PWM_LEG_FR_INST);
     DL_TimerG_enablePower(PWM_LEG_BL_INST);
     DL_TimerA_enablePower(PWM_LEG_BR_INST);
+    DL_I2C_enablePower(VOICE_I2C_INST);
     DL_UART_Main_enablePower(UART_0_INST);
+    DL_SPI_enablePower(SPEAKER_SPI_INST);
 
     delay_cycles(POWER_STARTUP_DELAY);
 }
@@ -137,10 +147,31 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initPeripheralOutputFunction(GPIO_PWM_LEG_BR_C0_IOMUX,GPIO_PWM_LEG_BR_C0_IOMUX_FUNC);
     DL_GPIO_enableOutput(GPIO_PWM_LEG_BR_C0_PORT, GPIO_PWM_LEG_BR_C0_PIN);
 
+    
+	DL_GPIO_initPeripheralInputFunctionFeatures(
+		 GPIO_VOICE_I2C_IOMUX_SDA, GPIO_VOICE_I2C_IOMUX_SDA_FUNC,
+		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
+		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
+	DL_GPIO_initPeripheralInputFunctionFeatures(
+		 GPIO_VOICE_I2C_IOMUX_SCL, GPIO_VOICE_I2C_IOMUX_SCL_FUNC,
+		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
+		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
+    DL_GPIO_enableHiZ(GPIO_VOICE_I2C_IOMUX_SDA);
+    DL_GPIO_enableHiZ(GPIO_VOICE_I2C_IOMUX_SCL);
+
     DL_GPIO_initPeripheralOutputFunction(
         GPIO_UART_0_IOMUX_TX, GPIO_UART_0_IOMUX_TX_FUNC);
     DL_GPIO_initPeripheralInputFunction(
         GPIO_UART_0_IOMUX_RX, GPIO_UART_0_IOMUX_RX_FUNC);
+
+    DL_GPIO_initPeripheralOutputFunction(
+        GPIO_SPEAKER_SPI_IOMUX_SCLK, GPIO_SPEAKER_SPI_IOMUX_SCLK_FUNC);
+    DL_GPIO_initPeripheralOutputFunction(
+        GPIO_SPEAKER_SPI_IOMUX_PICO, GPIO_SPEAKER_SPI_IOMUX_PICO_FUNC);
+    DL_GPIO_initPeripheralInputFunction(
+        GPIO_SPEAKER_SPI_IOMUX_POCI, GPIO_SPEAKER_SPI_IOMUX_POCI_FUNC);
+
+    DL_GPIO_initDigitalOutput(SPEAKER_LRC_IOMUX);
 
     DL_GPIO_initDigitalOutput(LCD_SCL_IOMUX);
 
@@ -174,6 +205,8 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		LCD_CS1_PIN |
 		LCD_CS2_PIN |
 		LCD_BLK_PIN);
+    DL_GPIO_clearPins(SPEAKER_PORT, SPEAKER_LRC_PIN);
+    DL_GPIO_enableOutput(SPEAKER_PORT, SPEAKER_LRC_PIN);
 
 }
 
@@ -417,6 +450,34 @@ SYSCONFIG_WEAK void SYSCFG_DL_PWM_LEG_BR_init(void) {
 }
 
 
+static const DL_I2C_ClockConfig gVOICE_I2CClockConfig = {
+    .clockSel = DL_I2C_CLOCK_BUSCLK,
+    .divideRatio = DL_I2C_CLOCK_DIVIDE_1,
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_VOICE_I2C_init(void) {
+
+    DL_I2C_setClockConfig(VOICE_I2C_INST,
+        (DL_I2C_ClockConfig *) &gVOICE_I2CClockConfig);
+    DL_I2C_setAnalogGlitchFilterPulseWidth(VOICE_I2C_INST,
+        DL_I2C_ANALOG_GLITCH_FILTER_WIDTH_50NS);
+    DL_I2C_enableAnalogGlitchFilter(VOICE_I2C_INST);
+
+    /* Configure Controller Mode */
+    DL_I2C_resetControllerTransfer(VOICE_I2C_INST);
+    /* Set frequency to 100000 Hz*/
+    DL_I2C_setTimerPeriod(VOICE_I2C_INST, 31);
+    DL_I2C_setControllerTXFIFOThreshold(VOICE_I2C_INST, DL_I2C_TX_FIFO_LEVEL_EMPTY);
+    DL_I2C_setControllerRXFIFOThreshold(VOICE_I2C_INST, DL_I2C_RX_FIFO_LEVEL_BYTES_1);
+    DL_I2C_enableControllerClockStretching(VOICE_I2C_INST);
+
+
+    /* Enable module */
+    DL_I2C_enableController(VOICE_I2C_INST);
+
+
+}
+
 static const DL_UART_Main_ClockConfig gUART_0ClockConfig = {
     .clockSel    = DL_UART_MAIN_CLOCK_MFCLK,
     .divideRatio = DL_UART_MAIN_CLOCK_DIVIDE_RATIO_1
@@ -451,6 +512,38 @@ SYSCONFIG_WEAK void SYSCFG_DL_UART_0_init(void)
 
 
     DL_UART_Main_enable(UART_0_INST);
+}
+
+static const DL_SPI_Config gSPEAKER_SPI_config = {
+    .mode        = DL_SPI_MODE_CONTROLLER,
+    .frameFormat = DL_SPI_FRAME_FORMAT_MOTO3_POL0_PHA0,
+    .parity      = DL_SPI_PARITY_NONE,
+    .dataSize    = DL_SPI_DATA_SIZE_16,
+    .bitOrder    = DL_SPI_BIT_ORDER_MSB_FIRST,
+};
+
+static const DL_SPI_ClockConfig gSPEAKER_SPI_clockConfig = {
+    .clockSel    = DL_SPI_CLOCK_BUSCLK,
+    .divideRatio = DL_SPI_CLOCK_DIVIDE_RATIO_1
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_SPEAKER_SPI_init(void) {
+    DL_SPI_setClockConfig(SPEAKER_SPI_INST, (DL_SPI_ClockConfig *) &gSPEAKER_SPI_clockConfig);
+
+    DL_SPI_init(SPEAKER_SPI_INST, (DL_SPI_Config *) &gSPEAKER_SPI_config);
+
+    /* Configure Controller mode */
+    /*
+     * Set the bit rate clock divider to generate the serial output clock
+     *     outputBitRate = (spiInputClock) / ((1 + SCR) * 2)
+     *     8000000 = (32000000)/((1 + 1) * 2)
+     */
+    DL_SPI_setBitRateSerialClockDivider(SPEAKER_SPI_INST, 1);
+    /* Set RX and TX FIFO threshold levels */
+    DL_SPI_setFIFOThreshold(SPEAKER_SPI_INST, DL_SPI_RX_FIFO_LEVEL_1_2_FULL, DL_SPI_TX_FIFO_LEVEL_1_2_EMPTY);
+
+    /* Enable module */
+    DL_SPI_enable(SPEAKER_SPI_INST);
 }
 
 SYSCONFIG_WEAK void SYSCFG_DL_SYSTICK_init(void)
